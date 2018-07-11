@@ -267,11 +267,10 @@ void Ex_Ascii(int line_num)
 
 void Ex_Asciiz(int line_num)
 {
+    if(Line2[line_num].A.size() < 2)
+        return;
     string tmp = Line2[line_num].A[1];
-    return;
     int len = (int)tmp.length();
-    cout<<len<<endl;
-    return;
     for(int i = 0; i < len ; i++)
     {
         Space[Static_pos++] = (int)tmp[i];
