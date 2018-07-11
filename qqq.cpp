@@ -1266,8 +1266,6 @@ int main(int argc, char *argv[])
         Save(Str);
     }
     fin.close();
-    cout<<"hhaa"<<endl;
-    return 0;
     //freopen("23.in","r",stdin);
     Heap_pos = Static_pos + 1;
     //cout<<"haha "<<endl;
