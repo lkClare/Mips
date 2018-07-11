@@ -741,6 +741,7 @@ void Save(string s)
                 Ex_Ascii(line_num);
                 break;
             case 2:
+                break;
                 Ex_Asciiz(line_num);
                 break;
             case 3:
@@ -1261,7 +1262,7 @@ int main(int argv,char *argc[])
         if(Skip)
             continue;
         Total++;
-        //Save(Str);
+        Save(Str);
     }
     fin.close();
     return 0;
