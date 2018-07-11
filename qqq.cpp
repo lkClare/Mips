@@ -29,8 +29,10 @@ struct Flow{
     Flow_Data x;
 };
 
+int Stop = -1;
 int Last_Lableline, Ex_Line, Next_Ex_Line, In_Pro, Wait, Total;
 queue<Flow> Q;
+queue<Flow> Q1;
 map<string, int> To_Register;
 int In[40], Out[40];
 int Register[40];
@@ -747,6 +749,11 @@ void Save(string s)
 
 int IF()
 {
+    if(Out[34])
+    {
+        Data_Hazard = true;
+        return 0;
+    }
     if(Register[34] > Total)
         return -1;
     while(Line2[Register[34]].A[0][0] == '_' || Line2[Register[34]].A[0] == "nop")
@@ -1162,10 +1169,12 @@ void Exe(Flow_Data &x, int line_num)
             else if(Register[3] == 10)
             {
                 exit(0);
+                Stop = 0;
             }
             else if(Register[3] == 17)
             {
                 exit(Register[5]);
+                Stop = Register[5];
             }
             break;
         default:
@@ -1223,7 +1232,7 @@ int main(int argv,char *argc[])
     Init();
     fin.open(argc[1]);
     //freopen("1.s","r",stdin);
-    //freopen("anssss.out","w",stdout);
+    //freopen("qwewqeqwe.out","w",stdout);
     Last_Lableline = -1;
     while(getline(fin, Str))
     {
@@ -1257,12 +1266,8 @@ int main(int argv,char *argc[])
         {
             Flow now = Q.front();
             Q.pop();
+            //printf("%d\n",now.Line_num);
             //cout<<now.Line_num<<" "<<Register[30]<<" "<<Register[28]<<endl;
-            if(Data_Hazard)
-            {
-                Q.push(now);
-                continue;
-            }
             if(now.Line_num == -1)
             {
                 In_Pro--;
@@ -1291,14 +1296,21 @@ int main(int argv,char *argc[])
             //cout<<"mao  "<<Data_Hazard<<endl;
             if(Data_Hazard)
             {
-                Q.push(now);
-                continue;
+                Q1.push(now);
+                In_Pro--;
+                for(int j = i + 1; j<= cnt;j++)
+                {
+                    Q1.push(Q.front());
+                    In_Pro--;
+                    Q.pop();
+                }
+                Wait = true;
+                break;
             }
             now.Process++;
             if(now.Process <= 5)
                 Q.push(now);
         }
-        //Wait = true;
         if(!Wait)
         {
             if(In_Pro < 5)
@@ -1311,11 +1323,15 @@ int main(int argv,char *argc[])
         {
             if(!In_Pro)
             {
-                Q.push((Flow){0, 1, Now});
-                In_Pro++;
+                while(!Q1.empty())
+                {
+                    Q.push(Q1.front());
+                    In_Pro++;
+                    Q1.pop();
+                }
                 Wait = false;
             }
         }
     }
-    return 0;
+    return Stop;
 }
