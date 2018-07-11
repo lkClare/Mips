@@ -11,7 +11,7 @@
 #include <map>
 using namespace std;
 
-#define N 5000010
+#define N 4000010
 
 typedef unsigned int UI;
 typedef unsigned long long UL;
@@ -35,6 +35,7 @@ map<string, int> To_Register;
 int In[40], Out[40];
 int Register[40];
 bool Control_Hazard, Data_Hazard, Structue_Hazard, Access;
+ifstream fin;
 
 char S[10000];
 
@@ -72,7 +73,7 @@ int Next[10000];
 map<string, int> Start_line;
 map<string, int> Start_pos;
 
-int Stack_pos = 10000000, Static_pos = 0, Heap_pos;
+int Stack_pos = 4000000, Static_pos = 0, Heap_pos;
 
 void Init()
 {
@@ -307,7 +308,7 @@ void Ex_Byte(int line_num)
     for(int i = 1; i < Size; i++)
     {
         Space[Static_pos].Val = (int)Line2[line_num].A[i][0];
-        Space[Static_pos++].Type = 'A';
+        Static_pos+=1;
     }
 }
 
@@ -317,7 +318,7 @@ void Ex_Half(int line_num)
     for(int i = 1; i < Size; i++)
     {
         Space[Static_pos].Val = To_num(Line2[line_num].A[i]);
-        Add_Half();
+        Static_pos+=2;
     }
 }
 
@@ -327,7 +328,7 @@ void Ex_Word(int line_num)
     for(int i = 1; i < Size; i++)
     {
         Space[Static_pos].Val = To_num(Line2[line_num].A[i]);
-        Add_Word();
+        Static_pos+=4;
     }
 }
 
@@ -1241,7 +1242,51 @@ void WB(Flow_Data x)
         Register[x.Rec2] = (int)x.Result2, Out[x.Rec2]--;
 }
 
-int main(int argc, char *argv[])
+int main(int argv,char *argc[])
+{
+    Init();
+    fin.open(argc[1]);
+    //freopen("1.s","r",stdin);
+    //freopen("4.out","w",stdout);
+    Last_Lableline = -1;
+    while(getline(fin, Str))
+    {
+        if(Str.length() == 0)
+            continue;
+        bool Skip = true;
+        int qwer = Str.length();
+        for(int i = 0 ; i < qwer; i++)
+            if(Str[i] != ' ' && Str[i] != '\t')
+                Skip = false;
+        if(Skip)
+            continue;
+        Total++;
+        Save(Str);
+    }
+    fin.close();
+    //freopen("1.in","r",stdin);
+    Heap_pos = Static_pos + 1;
+    //cout<<"haha "<<endl;
+    Register[34] = Start_line["main"];
+    int nowline;
+    while(1)
+    {
+        nowline = IF();
+        if(nowline == -1)
+            break;
+        //cout<<nowline<<" "<<Register[29]<<endl;
+        //cout<<nowline<<" "<<Line[nowline].Op_Val<<" "<<Register[30]<<" "<<Register[34]<<endl;
+        ID_DP(Line[nowline], nowline, Now);
+        //cout<<Now.Rec<<" "<<Now.a1<<endl;
+        Exe(Now, nowline);
+        MA(Now);
+        WB(Now);
+        //cout<<nowline<<" "<<Register[30]<<" "<<Register[34]<<endl;
+    }
+    return 0;
+}
+
+/*int main(int argc, char *argv[])
 {
     Init();
     fin.open(argv[1]);
@@ -1283,7 +1328,7 @@ int main(int argc, char *argv[])
         //cout<<nowline<<" "<<Register[30]<<" "<<Register[34]<<endl;
     }
     return 0;
-    /*Ex_Line = Start_line["main"];
+    Ex_Line = Start_line["main"];
      //cout<<"ssss -> "<<Ex_Line<<endl;
      Register[34] = Ex_Line;
      Q.push((Flow){0, 1, Now});
@@ -1357,5 +1402,6 @@ int main(int argc, char *argv[])
      }
      }
      }*/
-    return 0;
-}
+//    return 0;
+//}
+
