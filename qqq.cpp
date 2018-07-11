@@ -1216,7 +1216,7 @@ int main(int argv,char *argc[])
     Init();
     fin.open(argc[1]);
     //freopen("1.s","r",stdin);
-    freopen("anssss.out","w",stdout);
+    //freopen("anssss.out","w",stdout);
     Last_Lableline = -1;
     while(getline(fin, Str))
     {
