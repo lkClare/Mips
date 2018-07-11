@@ -268,6 +268,7 @@ void Ex_Ascii(int line_num)
 void Ex_Asciiz(int line_num)
 {
     string tmp = Line2[line_num].A[1];
+    return;
     int len = (int)tmp.length();
     cout<<len<<endl;
     return;
