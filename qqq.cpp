@@ -725,6 +725,7 @@ void Save(string s)
         if(now == len)
             break;
     }
+    return;
     if(First_Token[First_Token.length() - 1] == ':')
     {
         string tmp;
@@ -1262,7 +1263,7 @@ int main(int argc, char *argv[])
         if(Skip)
             continue;
         Total++;
-        //Save(Str);
+        Save(Str);
     }
     fin.close();
     cout<<"hhaa"<<endl;
