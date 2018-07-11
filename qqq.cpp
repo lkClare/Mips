@@ -742,7 +742,7 @@ int IF()
 {
     if(Register[34] > Total)
         return -1;
-    while(Line2[Register[34]].A[0][0] == '_')
+    while(Line2[Register[34]].A[0][0] == '_' || Line2[Register[34]].A[0] == "nop")
         Register[34]++;
     int tmp = Register[34];
     Register[34]++;
