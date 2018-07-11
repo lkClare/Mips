@@ -43,6 +43,20 @@ int Space[N];
 int C[40];
 bool Data_now,Text_now;
 string Str;
+enum OpType{
+    Align, Ascii, Asciiz, Byte, Half, Word, mySpace,     // 0 ~ 6
+    Add, Addu, Addiu, Sub, Subu, Mul, Mulu, Div, Divu,
+    // 7 ~ 15
+    Xor, Xoru, Neg, Negu, Rem, Remu, Li,      // 16 ~ 22
+    Seq, Sge, Sgt, Sle, Slt, Sne,         // 23 ~ 28
+    B, Beq, Bne, Bge, Ble, Bgt, Blt, Beqz, Bnez, Blez, Bgez, Bgtz, Bltz,
+    // 29 ~ 41
+    J, Jr, Jal, Jalr,   // 42 ~ 45
+    La, Lb, Lh, Lw,    // 46 ~ 49
+    Sb, Sh, Sw,      // 50 ~ 52
+    Move, Mfhi, Mflo,     // 53 ~ 55
+    Nop, Syscall     // 56 ~ 57
+};
 map<string, int> Val;
 
 
@@ -263,6 +277,7 @@ void Ex_Ascii(int line_num)
 
 void Ex_Asciiz(int line_num)
 {
+    return;
     string tmp = Line2[line_num].A[1];
     int len = (int)tmp.length();
     for(int i = 0; i < len ; i++)
