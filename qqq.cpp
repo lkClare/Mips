@@ -744,6 +744,7 @@ void Save(string s)
                 Ex_Ascii(line_num);
                 break;
             case 2:
+                break;
                 Ex_Asciiz(line_num);
                 break;
             case 3:
