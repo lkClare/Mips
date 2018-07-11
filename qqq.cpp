@@ -288,6 +288,8 @@ void Ex_Asciiz(int line_num)
     {
         if(tmp[i] == '\\')
         {
+            if(i == len  - 1)
+                break;
             if(tmp[i+1] == 'n')
                 Space[Static_pos].Val = 10;
             else if(tmp[i+1] == '"')
@@ -736,15 +738,12 @@ void Save(string s)
     {
         switch (Val[First_Token]) {
             case 0:
-                break;
                 Ex_Align(line_num);
                 break;
             case 1:
-                break;
                 Ex_Ascii(line_num);
                 break;
             case 2:
-                break;
                 Ex_Asciiz(line_num);
                 break;
             case 3:
