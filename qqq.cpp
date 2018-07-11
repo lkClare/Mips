@@ -740,6 +740,7 @@ void Save(string s)
                 Ex_Align(line_num);
                 break;
             case 1:
+                break;
                 Ex_Ascii(line_num);
                 break;
             case 2:
