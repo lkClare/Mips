@@ -1246,6 +1246,8 @@ void WB(Flow_Data x)
 int main(int argc, char *argv[])
 {
     Init();
+    cout<<"haha"<<endl;
+    return 0;
     //freopen("23.s","r",stdin);
     //freopen("4.out","w",stdout);
     fin.open(argv[1]);
