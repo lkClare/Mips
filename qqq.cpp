@@ -734,9 +734,9 @@ void Save(string s)
     }
     else if(Data_now)
     {
-        return;
         switch (Val[First_Token]) {
             case 0:
+                break;
                 Ex_Align(line_num);
                 break;
             case 1:
