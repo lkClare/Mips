@@ -184,10 +184,8 @@ void Read()
 
 void ID_Skip_Space(string s, int &pos, int len)
 {
-    //cout<<"s "<<pos<<endl;
     while(pos < len && (s[pos] == ' ' || s[pos] == ',' || s[pos] == '\t'))
         pos++;
-    //cout<<"t "<<pos<<endl;
 }
 
 string Scanner(string s, int &pos, int len)
@@ -237,18 +235,6 @@ int To_num(string s)
         sum = sum * 10 + (s[i] - '0');
     return sum * f;
 }
-
-/*void Add_Half()
-{
-    Space[Static_pos++].Type = 'B';
-    Space[Static_pos++].Type = 'B';
-}
-
-void Add_Word()
-{
-    for(int i = 1; i <= 4; i++)
-        Space[Static_pos++].Type = 'C';
-}*/
 
 void Ex_Align(int line_num)
 {
@@ -457,12 +443,10 @@ void ID_Kind7(Flow_Data &x, int line_num, Flow_Data &y)
 
 void ID_Kind8(Flow_Data &x, int line_num, Flow_Data &y)
 {
-    //cout<<"hehe"<<endl;
     if(!Line2[line_num].Transed)
     {
         Line2[line_num].Transed = true;
         x.Rec = 34;
-        //cout<<"pppppp "<<Line2[line_num].A[1]<<endl;
         x.a1 = To_Register[Line2[line_num].A[1]];
     }
     y = x;
@@ -666,7 +650,6 @@ void ID_Kind14(Flow_Data &x, Flow_Data &y)
 
 void Ex_Store(int pos, int x, int len)
 {
-    //cout<<"st "<<pos<<" -> "<<x<<endl;
     Space[pos] = x;
 }
 
@@ -720,7 +703,6 @@ void Save(string s)
                 Ex_Ascii(line_num);
                 break;
             case 2:
-                //break;
                 Ex_Asciiz(line_num);
                 break;
             case 3:
@@ -741,10 +723,6 @@ void Save(string s)
     }
     else
         Line[line_num].Op_Val = Val[First_Token];
-    /*cout<<line_num<<" ";
-     for(int i = 0; i< Line2[line_num].A.size(); i++)
-     cout<<Line2[line_num].A[i]<<" ";
-     cout<<endl;*/
 }
 
 int IF()
@@ -1126,14 +1104,11 @@ void Exe(Flow_Data &x, int line_num)
         case 57:
             if(Register[3] == 1)
             {
-                //cout<<"qgggggggggggg->";
                 printf("%d",Register[5]);
             }
             else if(Register[3] == 4)
             {
                 int pos = Register[5];
-                //cout<<pos<<endl;
-                //cout<<endl;
                 while(1)
                 {
                     if(Space[pos] == 0 )
@@ -1147,13 +1122,11 @@ void Exe(Flow_Data &x, int line_num)
             {
                 int tmp;
                 scanf("%d",&tmp);
-                //cout<<"s -> "<<tmp<<endl;
                 x.Result = tmp;
             }
             else if(Register[3] == 8)
             {
                 scanf("%s",S);
-                //printf("s -> %s",S);
                 x.Result = (int)strlen(S) + 1;
                 for(int i = 1; i <= x.Result - 1; i++)
                 {
@@ -1186,13 +1159,6 @@ void MA(Flow_Data &x)
 {
     if(x.Op_Val >= 47 && x.Op_Val <= 52)
     {
-        /*if(Access)
-         {/Users/mac/Desktop/MipsTest/123/234/5.in
-         Structue_Hazard = true;
-         return;
-         }*/
-        //if((int)x.Result < 0)
-        //    cout<<"fuck "<<x.Op_Val<<" "<<x.Result<<endl;
         switch (x.Op_Val) {
             case 47:
                 x.Result = Space[(int)x.Result];
@@ -1215,7 +1181,6 @@ void MA(Flow_Data &x)
             default:
                 break;
         }
-        //Access = true;
     }
 }
 
@@ -1231,8 +1196,6 @@ int main(int argv,char *argc[])
 {
     Init();
     fin.open(argc[1]);
-    //freopen("1.s","r",stdin);
-    //freopen("qwewqeqwe.out","w",stdout);
     Last_Lableline = -1;
     while(getline(fin, Str))
     {
@@ -1249,10 +1212,7 @@ int main(int argv,char *argc[])
         Save(Str);
     }
     fin.close();
-    //return 0;
-    //freopen("1.in","r",stdin);
     Heap_pos = Static_pos + 1;
-    //cout<<"haha "<<endl;
     Register[34] = Start_line["main"];
     Q.push((Flow){0, 1, Now});
     In_Pro++;
@@ -1261,13 +1221,10 @@ int main(int argv,char *argc[])
     {
         int cnt = min(5, In_Pro);
         Data_Hazard = false;
-        //cout<<Register[34]<<" "<<Register[30]<<" "<<endl;
         for(int i = 1; i <= cnt; i++)
         {
             Flow now = Q.front();
             Q.pop();
-            //printf("%d\n",now.Line_num);
-            //cout<<now.Line_num<<" "<<Register[30]<<" "<<Register[28]<<endl;
             if(now.Line_num == -1)
             {
                 In_Pro--;
@@ -1293,7 +1250,6 @@ int main(int argv,char *argc[])
                 default:
                     break;
             }
-            //cout<<"mao  "<<Data_Hazard<<endl;
             if(Data_Hazard)
             {
                 Q1.push(now);
