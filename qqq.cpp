@@ -289,10 +289,13 @@ void Ex_Asciiz(int line_num)
         if(tmp[i] == '\\')
         {
             if(tmp[i+1] == 'n')
+                cout<<"haha";
                 //Space[Static_pos].Val = 10;
             else if(tmp[i+1] == '"')
+                cout<<"haa";
                 //Space[Static_pos].Val = 34;
             else if(tmp[i+1] == '\\')
+                cout<"Hh";
                 //Space[Static_pos].Val = 92;
             i++;
         }
