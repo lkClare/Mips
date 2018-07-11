@@ -11,7 +11,7 @@
 #include <map>
 using namespace std;
 
-#define N 4000010
+#define N 8000010
 
 typedef unsigned int UI;
 typedef unsigned long long UL;
