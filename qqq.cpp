@@ -1261,9 +1261,10 @@ int main(int argv,char *argc[])
         if(Skip)
             continue;
         Total++;
-        Save(Str);
+        //Save(Str);
     }
     fin.close();
+    return 0;
     //freopen("1.in","r",stdin);
     Heap_pos = Static_pos + 1;
     //cout<<"haha "<<endl;
