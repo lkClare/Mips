@@ -1291,6 +1291,7 @@ int main(int argv,char *argc[])
             if(now.Process <= 5)
                 Q.push(now);
         }
+        Wait = true;
         if(!Wait)
         {
             if(In_Pro < 5)
