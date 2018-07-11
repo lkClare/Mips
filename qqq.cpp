@@ -288,21 +288,19 @@ void Ex_Asciiz(int line_num)
     {
         if(tmp[i] == '\\')
         {
-            if(i == len  - 1)
-                break;
             if(tmp[i+1] == 'n')
-                Space[Static_pos].Val = 10;
+                //Space[Static_pos].Val = 10;
             else if(tmp[i+1] == '"')
-                Space[Static_pos].Val = 34;
+                //Space[Static_pos].Val = 34;
             else if(tmp[i+1] == '\\')
-                Space[Static_pos].Val = 92;
+                //Space[Static_pos].Val = 92;
             i++;
         }
-        else Space[Static_pos].Val = (int)tmp[i];
-        Space[Static_pos++].Type = 'A';
+        //else //Space[Static_pos].Val = (int)tmp[i];
+        //Space[Static_pos++].Type = 'A';
     }
-    Space[Static_pos].Val = 0;
-    Space[Static_pos++].Type = 'A';
+    //Space[Static_pos].Val = 0;
+    //Space[Static_pos++].Type = 'A';
 }
 
 void Ex_Byte(int line_num)
