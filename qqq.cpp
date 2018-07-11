@@ -267,7 +267,6 @@ void Ex_Ascii(int line_num)
 
 void Ex_Asciiz(int line_num)
 {
-    return;
     string tmp = Line2[line_num].A[1];
     int len = (int)tmp.length();
     for(int i = 0; i < len ; i++)
