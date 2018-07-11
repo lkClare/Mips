@@ -283,19 +283,19 @@ void Ex_Ascii(int line_num)
 void Ex_Asciiz(int line_num)
 {
     string tmp = Line2[line_num].A[1];
-    int len = (int)tmp.length();
+    int len = (int)tmp.length(), cnt=0;
     for(int i = 0; i < len ; i++)
     {
         if(tmp[i] == '\\')
         {
             if(tmp[i+1] == 'n')
-                cout<<"haha";
+                cnt++;
                 //Space[Static_pos].Val = 10;
             else if(tmp[i+1] == '"')
-                cout<<"haa";
+                cnt++;
                 //Space[Static_pos].Val = 34;
             else if(tmp[i+1] == '\\')
-                cout<"Hh";
+                cnt++;
                 //Space[Static_pos].Val = 92;
             i++;
         }
