@@ -725,7 +725,6 @@ void Save(string s)
         if(now == len)
             break;
     }
-    return;
     if(First_Token[First_Token.length() - 1] == ':')
     {
         string tmp;
@@ -735,6 +734,7 @@ void Save(string s)
     }
     else if(Data_now)
     {
+        return;
         switch (Val[First_Token]) {
             case 0:
                 Ex_Align(line_num);
