@@ -11,7 +11,7 @@
 #include <map>
 using namespace std;
 
-#define N 8000010
+#define N 5000010
 
 typedef unsigned int UI;
 typedef unsigned long long UL;
@@ -35,8 +35,6 @@ map<string, int> To_Register;
 int In[40], Out[40];
 int Register[40];
 bool Control_Hazard, Data_Hazard, Structue_Hazard, Access;
-ifstream fin;
-
 
 char S[10000];
 
@@ -283,7 +281,7 @@ void Ex_Ascii(int line_num)
 void Ex_Asciiz(int line_num)
 {
     string tmp = Line2[line_num].A[1];
-    int len = (int)tmp.length(), cnt=0;
+    int len = (int)tmp.length();
     for(int i = 0; i < len ; i++)
     {
         if(tmp[i] == '\\')
@@ -742,7 +740,6 @@ void Save(string s)
                 Ex_Ascii(line_num);
                 break;
             case 2:
-                break;
                 Ex_Asciiz(line_num);
                 break;
             case 3:
@@ -764,9 +761,9 @@ void Save(string s)
     else
         Line[line_num].Op_Val = Val[First_Token];
     /*cout<<line_num<<" ";
-    for(int i = 0; i< Line2[line_num].A.size(); i++)
-        cout<<Line2[line_num].A[i]<<" ";
-    cout<<endl;*/
+     for(int i = 0; i< Line2[line_num].A.size(); i++)
+     cout<<Line2[line_num].A[i]<<" ";
+     cout<<endl;*/
 }
 
 int IF()
@@ -1247,9 +1244,9 @@ void WB(Flow_Data x)
 int main(int argc, char *argv[])
 {
     Init();
-    //freopen("23.s","r",stdin);
-    //freopen("4.out","w",stdout);
     fin.open(argv[1]);
+    //freopen("1.s","r",stdin);
+    //freopen("4.out","w",stdout);
     Last_Lableline = -1;
     while(getline(fin, Str))
     {
@@ -1266,7 +1263,7 @@ int main(int argc, char *argv[])
         Save(Str);
     }
     fin.close();
-    //freopen("23.in","r",stdin);
+    //freopen("1.in","r",stdin);
     Heap_pos = Static_pos + 1;
     //cout<<"haha "<<endl;
     Register[34] = Start_line["main"];
@@ -1287,78 +1284,78 @@ int main(int argc, char *argv[])
     }
     return 0;
     /*Ex_Line = Start_line["main"];
-    //cout<<"ssss -> "<<Ex_Line<<endl;
-    Register[34] = Ex_Line;
-    Q.push((Flow){0, 1, Now});
-    In_Pro++;
-    int RR = 0;
-    while(1)
-    {
-        int cnt = min(5, In_Pro);
-        Data_Hazard = false;
-        //cout<<Register[34]<<" "<<Register[30]<<" "<<endl;
-        for(int i = 1; i <= cnt; i++)
-        {
-            Flow now = Q.front();
-            Q.pop();
-            cout<<now.Line_num<<" "<<Register[30]<<" "<<Register[28]<<endl;
-            if(Data_Hazard)
-            {
-                Q.push(now);
-                continue;
-            }
-            if(now.Line_num == -1)
-            {
-                In_Pro--;
-                continue;
-            }
-            switch (now.Process) {
-                case 1:
-                    now.Line_num = IF();
-                    break;
-                case 2:
-                    ID_DP(Line[now.Line_num], now.Line_num, now.x);
-                    break;
-                case 3:
-                    Exe(now.x, now.Line_num);
-                    break;
-                case 4:
-                    MA(now.x);
-                    break;
-                case 5:
-                    WB(now.x);
-                    In_Pro--;
-                    break;
-                default:
-                    break;
-            }
-            //cout<<"mao  "<<Data_Hazard<<endl;
-            if(Data_Hazard)
-            {
-                Q.push(now);
-                continue;
-            }
-            now.Process++;
-            if(now.Process <= 5)
-                Q.push(now);
-        }
-        if(!Wait)
-        {
-            if(In_Pro < 5)
-            {
-                Q.push((Flow){0, 1, Now});
-                In_Pro++;
-            }
-        }
-        else
-        {
-            if(!In_Pro)
-            {
-                Q.push((Flow){0, 1, Now});
-                In_Pro++;
-                Wait = false;
-            }
-        }
-    }*/
+     //cout<<"ssss -> "<<Ex_Line<<endl;
+     Register[34] = Ex_Line;
+     Q.push((Flow){0, 1, Now});
+     In_Pro++;
+     int RR = 0;
+     while(1)
+     {
+     int cnt = min(5, In_Pro);
+     Data_Hazard = false;
+     //cout<<Register[34]<<" "<<Register[30]<<" "<<endl;
+     for(int i = 1; i <= cnt; i++)
+     {
+     Flow now = Q.front();
+     Q.pop();
+     cout<<now.Line_num<<" "<<Register[30]<<" "<<Register[28]<<endl;
+     if(Data_Hazard)
+     {
+     Q.push(now);
+     continue;
+     }
+     if(now.Line_num == -1)
+     {
+     In_Pro--;
+     continue;
+     }
+     switch (now.Process) {
+     case 1:
+     now.Line_num = IF();
+     break;
+     case 2:
+     ID_DP(Line[now.Line_num], now.Line_num, now.x);
+     break;
+     case 3:
+     Exe(now.x, now.Line_num);
+     break;
+     case 4:
+     MA(now.x);
+     break;
+     case 5:
+     WB(now.x);
+     In_Pro--;
+     break;
+     default:
+     break;
+     }
+     //cout<<"mao  "<<Data_Hazard<<endl;
+     if(Data_Hazard)
+     {
+     Q.push(now);
+     continue;
+     }
+     now.Process++;
+     if(now.Process <= 5)
+     Q.push(now);
+     }
+     if(!Wait)
+     {
+     if(In_Pro < 5)
+     {
+     Q.push((Flow){0, 1, Now});
+     In_Pro++;
+     }
+     }
+     else
+     {
+     if(!In_Pro)
+     {
+     Q.push((Flow){0, 1, Now});
+     In_Pro++;
+     Wait = false;
+     }
+     }
+     }*/
     return 0;
 }
