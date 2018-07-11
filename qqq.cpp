@@ -39,10 +39,7 @@ ifstream fin;
 
 char S[10000];
 
-struct Data{
-    int Val;
-    char Type;
-}Space[N];
+int Space[N];
 int C[40];
 bool Data_now,Text_now;
 string Str;
@@ -239,7 +236,7 @@ int To_num(string s)
     return sum * f;
 }
 
-void Add_Half()
+/*void Add_Half()
 {
     Space[Static_pos++].Type = 'B';
     Space[Static_pos++].Type = 'B';
@@ -249,7 +246,7 @@ void Add_Word()
 {
     for(int i = 1; i <= 4; i++)
         Space[Static_pos++].Type = 'C';
-}
+}*/
 
 void Ex_Align(int line_num)
 {
@@ -267,15 +264,14 @@ void Ex_Ascii(int line_num)
         if(tmp[i] == '\\')
         {
             if(tmp[i+1] == 'n')
-                Space[Static_pos].Val = 10;
+                Space[Static_pos++] = 10;
             else if(tmp[i+1] == '"')
-                Space[Static_pos].Val = 34;
+                Space[Static_pos++] = 34;
             else if(tmp[i+1] == '\\')
-                Space[Static_pos].Val = 92;
+                Space[Static_pos++] = 92;
             i++;
         }
-        else Space[Static_pos].Val = (int)tmp[i];
-        Space[Static_pos++].Type = 'A';
+        else Space[Static_pos++] = (int)tmp[i];
     }
 }
 
@@ -288,18 +284,16 @@ void Ex_Asciiz(int line_num)
         if(tmp[i] == '\\')
         {
             if(tmp[i+1] == 'n')
-                Space[Static_pos].Val = 10;
+                Space[Static_pos++] = 10;
             else if(tmp[i+1] == '"')
-                Space[Static_pos].Val = 34;
+                Space[Static_pos++] = 34;
             else if(tmp[i+1] == '\\')
-                Space[Static_pos].Val = 92;
+                Space[Static_pos++] = 92;
             i++;
         }
-        else Space[Static_pos].Val = (int)tmp[i];
-        Space[Static_pos++].Type = 'A';
+        else Space[Static_pos++] = (int)tmp[i];
     }
-    Space[Static_pos].Val = 0;
-    Space[Static_pos++].Type = 'A';
+    Space[Static_pos++] = 0;
 }
 
 void Ex_Byte(int line_num)
@@ -307,7 +301,7 @@ void Ex_Byte(int line_num)
     int Size = (int)Line2[line_num].A.size();
     for(int i = 1; i < Size; i++)
     {
-        Space[Static_pos].Val = (int)Line2[line_num].A[i][0];
+        Space[Static_pos] = (int)Line2[line_num].A[i][0];
         Static_pos+=1;
     }
 }
@@ -317,7 +311,7 @@ void Ex_Half(int line_num)
     int Size = (int)Line2[line_num].A.size();
     for(int i = 1; i < Size; i++)
     {
-        Space[Static_pos].Val = To_num(Line2[line_num].A[i]);
+        Space[Static_pos] = To_num(Line2[line_num].A[i]);
         Static_pos+=2;
     }
 }
@@ -327,7 +321,7 @@ void Ex_Word(int line_num)
     int Size = (int)Line2[line_num].A.size();
     for(int i = 1; i < Size; i++)
     {
-        Space[Static_pos].Val = To_num(Line2[line_num].A[i]);
+        Space[Static_pos] = To_num(Line2[line_num].A[i]);
         Static_pos+=4;
     }
 }
@@ -337,8 +331,7 @@ void Ex_Space(int line_num)
     int num = To_num(Line2[line_num].A[1]);
     for(int i = 1; i <= num; i++)
     {
-        Space[Static_pos].Val = 0;
-        Space[Static_pos++].Type = 'D';
+        Space[Static_pos++] = 0;
     }
 }
 
@@ -680,15 +673,7 @@ void ID_Kind14(Flow_Data &x, Flow_Data &y)
 void Ex_Store(int pos, int x, int len)
 {
     //cout<<"st "<<pos<<" -> "<<x<<endl;
-    Space[pos].Val = x;
-    char tmp;
-    if(len == 1)
-        tmp = 'A';
-    else if(len == 2)
-        tmp = 'B';
-    else tmp = 'C';
-    for(int i = 1 ; i <= len; i++)
-        Space[pos++].Type = tmp;
+    Space[pos] = x;
 }
 
 void Save(string s)
@@ -741,7 +726,7 @@ void Save(string s)
                 Ex_Ascii(line_num);
                 break;
             case 2:
-                break;
+                //break;
                 Ex_Asciiz(line_num);
                 break;
             case 3:
@@ -1152,9 +1137,9 @@ void Exe(Flow_Data &x, int line_num)
                 //cout<<endl;
                 while(1)
                 {
-                    if(Space[pos].Val == 0)
+                    if(Space[pos] == 0)
                         break;
-                    char ch = (char)Space[pos].Val;
+                    char ch = (char)Space[pos];
                     printf("%c",ch);
                     pos++;
                 }
@@ -1173,11 +1158,9 @@ void Exe(Flow_Data &x, int line_num)
                 x.Result = (int)strlen(S) + 1;
                 for(int i = 1; i <= x.Result - 1; i++)
                 {
-                    Space[Register[5] + i - 1].Val = (int)S[i - 1];
-                    Space[Register[5] + i - 1].Type = 'A';
+                    Space[Register[5] + i - 1] = (int)S[i - 1];
                 }
-                Space[Register[5] + x.Result - 1].Val = 0;
-                Space[Register[5] + x.Result - 1].Type = 'A';
+                Space[Register[5] + x.Result - 1] = 0;
             }
             else if(Register[3] == 9)
             {
@@ -1211,13 +1194,13 @@ void MA(Flow_Data &x)
         //    cout<<"fuck "<<x.Op_Val<<" "<<x.Result<<endl;
         switch (x.Op_Val) {
             case 47:
-                x.Result = Space[(int)x.Result].Val;
+                x.Result = Space[(int)x.Result];
                 break;
             case 48:
-                x.Result = Space[(int)x.Result].Val;
+                x.Result = Space[(int)x.Result];
                 break;
             case 49:
-                x.Result = Space[(int)x.Result].Val;
+                x.Result = Space[(int)x.Result];
                 break;
             case 50:
                 Ex_Store((int)x.Result, (int)x.Result2, 1);
@@ -1265,7 +1248,7 @@ int main(int argv,char *argc[])
         Save(Str);
     }
     fin.close();
-    return 0;
+    //return 0;
     //freopen("1.in","r",stdin);
     Heap_pos = Static_pos + 1;
     //cout<<"haha "<<endl;
