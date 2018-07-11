@@ -411,7 +411,7 @@ void ID_Kind5(Flow_Data &x, int line_num, Flow_Data &y)
         x.a3 = Start_line[Line2[line_num].A[3]];
     }
     y = x;
-    if(Out[y.a1] || (!y.Is_Num && Out[y.a2]))
+    if(Out[y.a1] || (!y.Is_Num && Out[y.a2]) || Out[34])
     {
         Data_Hazard = true;
         return;
@@ -432,7 +432,7 @@ void ID_Kind6(Flow_Data &x,int line_num, Flow_Data &y)
         x.a2 = Start_line[Line2[line_num].A[2]];
     }
     y = x;
-    if(Out[y.a1])
+    if(Out[y.a1] || Out[34])
     {
         Data_Hazard = true;
         return;
@@ -480,10 +480,16 @@ void ID_Kind9(Flow_Data &x, int line_num, Flow_Data &y)
         Line2[line_num].Transed = true;
         x.Rec = 30;
         x.Rec2 = 34;
+        x.a1 = 34;
         x.a2 = Start_line[Line2[line_num].A[1]];
     }
     y = x;
-    y.a1 = Register[34];
+    if(Out[y.a1])
+    {
+        Data_Hazard = true;
+        return;
+    }
+    y.a1 = Register[y.a1];
     Out[y.Rec]++;
     Out[y.Rec2]++;
 }
@@ -495,15 +501,16 @@ void ID_Kind10(Flow_Data &x, int line_num, Flow_Data &y)
         Line2[line_num].Transed = true;
         x.Rec = 30;
         x.Rec2 = 34;
+        x.a1 = 34;
         x.a2 = To_Register[Line2[line_num].A[1]];
     }
     y = x;
-    if(Out[y.a2])
+    if(Out[y.a2] || Out[y.a1])
     {
         Data_Hazard = true;
         return;
     }
-    y.a1 = Register[34];
+    y.a1 = Register[y.a1];
     y.a2 = Register[y.a2];
     Out[y.Rec]++;
     Out[y.Rec2]++;
@@ -746,7 +753,7 @@ int IF()
         Register[34]++;
     int tmp = Register[34];
     Register[34]++;
-    if(Line[tmp].Op_Val >= 29 && Line[tmp].Op_Val <= 52)
+    if((Line[tmp].Op_Val >= 29 && Line[tmp].Op_Val <= 52 ) || (Line[tmp].Op_Val == 57))
         Wait = true;
     return tmp;
 }
@@ -1291,7 +1298,7 @@ int main(int argv,char *argc[])
             if(now.Process <= 5)
                 Q.push(now);
         }
-        Wait = true;
+        //Wait = true;
         if(!Wait)
         {
             if(In_Pro < 5)
