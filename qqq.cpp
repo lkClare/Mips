@@ -11,7 +11,7 @@
 #include <map>
 using namespace std;
 
-#define N 1000010
+#define N 4000010
 
 typedef unsigned int UI;
 typedef unsigned long long UL;
@@ -70,7 +70,7 @@ int Next[10000];
 map<string, int> Start_line;
 map<string, int> Start_pos;
 
-int Stack_pos = 1000000, Static_pos = 0, Heap_pos;
+int Stack_pos = 4000000, Static_pos = 0, Heap_pos;
 
 void Init()
 {
