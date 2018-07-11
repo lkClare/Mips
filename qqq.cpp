@@ -565,7 +565,7 @@ void ID_Kind12(Flow_Data &x,int line_num, Flow_Data &y)
         Trans(x, line_num);
     }
     y = x;
-    if(Out[y.a3] && Out[y.a1])
+    if(Out[y.a3] || (!y.Is_Num && Out[y.a1]))
     {
         Data_Hazard = true;
         return;
@@ -746,7 +746,7 @@ int IF()
         Register[34]++;
     int tmp = Register[34];
     Register[34]++;
-    if(Line[tmp].Op_Val >= 29 && Line[tmp].Op_Val <= 45)
+    if(Line[tmp].Op_Val >= 29 && Line[tmp].Op_Val <= 52)
         Wait = true;
     return tmp;
 }
@@ -1216,7 +1216,7 @@ int main(int argv,char *argc[])
     Init();
     fin.open(argc[1]);
     //freopen("1.s","r",stdin);
-    //freopen("4.out","w",stdout);
+    freopen("anssss.out","w",stdout);
     Last_Lableline = -1;
     while(getline(fin, Str))
     {
@@ -1238,140 +1238,76 @@ int main(int argv,char *argc[])
     Heap_pos = Static_pos + 1;
     //cout<<"haha "<<endl;
     Register[34] = Start_line["main"];
-    int nowline;
+    Q.push((Flow){0, 1, Now});
+    In_Pro++;
+    int RR = 0;
     while(1)
     {
-        nowline = IF();
-        if(nowline == -1)
-            break;
-        //cout<<nowline<<" "<<Register[29]<<endl;
-        //cout<<nowline<<" "<<Line[nowline].Op_Val<<" "<<Register[30]<<" "<<Register[34]<<endl;
-        ID_DP(Line[nowline], nowline, Now);
-        //cout<<Now.Rec<<" "<<Now.a1<<endl;
-        Exe(Now, nowline);
-        MA(Now);
-        WB(Now);
-        //cout<<nowline<<" "<<Register[30]<<" "<<Register[34]<<endl;
+        int cnt = min(5, In_Pro);
+        Data_Hazard = false;
+        //cout<<Register[34]<<" "<<Register[30]<<" "<<endl;
+        for(int i = 1; i <= cnt; i++)
+        {
+            Flow now = Q.front();
+            Q.pop();
+            //cout<<now.Line_num<<" "<<Register[30]<<" "<<Register[28]<<endl;
+            if(Data_Hazard)
+            {
+                Q.push(now);
+                continue;
+            }
+            if(now.Line_num == -1)
+            {
+                In_Pro--;
+                continue;
+            }
+            switch (now.Process) {
+                case 1:
+                    now.Line_num = IF();
+                    break;
+                case 2:
+                    ID_DP(Line[now.Line_num], now.Line_num, now.x);
+                    break;
+                case 3:
+                    Exe(now.x, now.Line_num);
+                    break;
+                case 4:
+                    MA(now.x);
+                    break;
+                case 5:
+                    WB(now.x);
+                    In_Pro--;
+                    break;
+                default:
+                    break;
+            }
+            //cout<<"mao  "<<Data_Hazard<<endl;
+            if(Data_Hazard)
+            {
+                Q.push(now);
+                continue;
+            }
+            now.Process++;
+            if(now.Process <= 5)
+                Q.push(now);
+        }
+        if(!Wait)
+        {
+            if(In_Pro < 5)
+            {
+                Q.push((Flow){0, 1, Now});
+                In_Pro++;
+            }
+        }
+        else
+        {
+            if(!In_Pro)
+            {
+                Q.push((Flow){0, 1, Now});
+                In_Pro++;
+                Wait = false;
+            }
+        }
     }
     return 0;
 }
-
-/*int main(int argc, char *argv[])
-{
-    Init();
-    fin.open(argv[1]);
-    //freopen("1.s","r",stdin);
-    //freopen("4.out","w",stdout);
-    Last_Lableline = -1;
-    while(getline(fin, Str))
-    {
-        if(Str.length() == 0)
-            continue;
-        bool Skip = true;
-        int qwer = Str.length();
-        for(int i = 0 ; i < qwer; i++)
-            if(Str[i] != ' ' && Str[i] != '\t')
-                Skip = false;
-        if(Skip)
-            continue;
-        Total++;
-        Save(Str);
-    }
-    fin.close();
-    //freopen("1.in","r",stdin);
-    Heap_pos = Static_pos + 1;
-    //cout<<"haha "<<endl;
-    Register[34] = Start_line["main"];
-    int nowline;
-    while(1)
-    {
-        nowline = IF();
-        if(nowline == -1)
-            break;
-        //cout<<nowline<<" "<<Register[29]<<endl;
-        //cout<<nowline<<" "<<Line[nowline].Op_Val<<" "<<Register[30]<<" "<<Register[34]<<endl;
-        ID_DP(Line[nowline], nowline, Now);
-        //cout<<Now.Rec<<" "<<Now.a1<<endl;
-        Exe(Now, nowline);
-        MA(Now);
-        WB(Now);
-        //cout<<nowline<<" "<<Register[30]<<" "<<Register[34]<<endl;
-    }
-    return 0;
-    Ex_Line = Start_line["main"];
-     //cout<<"ssss -> "<<Ex_Line<<endl;
-     Register[34] = Ex_Line;
-     Q.push((Flow){0, 1, Now});
-     In_Pro++;
-     int RR = 0;
-     while(1)
-     {
-     int cnt = min(5, In_Pro);
-     Data_Hazard = false;
-     //cout<<Register[34]<<" "<<Register[30]<<" "<<endl;
-     for(int i = 1; i <= cnt; i++)
-     {
-     Flow now = Q.front();
-     Q.pop();
-     cout<<now.Line_num<<" "<<Register[30]<<" "<<Register[28]<<endl;
-     if(Data_Hazard)
-     {
-     Q.push(now);
-     continue;
-     }
-     if(now.Line_num == -1)
-     {
-     In_Pro--;
-     continue;
-     }
-     switch (now.Process) {
-     case 1:
-     now.Line_num = IF();
-     break;
-     case 2:
-     ID_DP(Line[now.Line_num], now.Line_num, now.x);
-     break;
-     case 3:
-     Exe(now.x, now.Line_num);
-     break;
-     case 4:
-     MA(now.x);
-     break;
-     case 5:
-     WB(now.x);
-     In_Pro--;
-     break;
-     default:
-     break;
-     }
-     //cout<<"mao  "<<Data_Hazard<<endl;
-     if(Data_Hazard)
-     {
-     Q.push(now);
-     continue;
-     }
-     now.Process++;
-     if(now.Process <= 5)
-     Q.push(now);
-     }
-     if(!Wait)
-     {
-     if(In_Pro < 5)
-     {
-     Q.push((Flow){0, 1, Now});
-     In_Pro++;
-     }
-     }
-     else
-     {
-     if(!In_Pro)
-     {
-     Q.push((Flow){0, 1, Now});
-     In_Pro++;
-     Wait = false;
-     }
-     }
-     }*/
-//    return 0;
-//}
-
