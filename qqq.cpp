@@ -268,7 +268,10 @@ void Ex_Ascii(int line_num)
 void Ex_Asciiz(int line_num)
 {
     if(Line2[line_num].A.size() < 2)
+    {
+        Space[Static_pos++] = 0;
         return;
+    }
     string tmp = Line2[line_num].A[1];
     int len = (int)tmp.length();
     for(int i = 0; i < len ; i++)
@@ -1119,7 +1122,7 @@ void Exe(Flow_Data &x, int line_num)
                 //cout<<endl;
                 while(1)
                 {
-                    if(Space[pos] == 0)
+                    if(Space[pos] == 0 )
                         break;
                     char ch = (char)Space[pos];
                     printf("%c",ch);
