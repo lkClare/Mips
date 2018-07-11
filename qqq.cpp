@@ -261,17 +261,7 @@ void Ex_Ascii(int line_num)
     int len = (int)tmp.length();
     for(int i = 0; i < len ; i++)
     {
-        if(tmp[i] == '\\')
-        {
-            if(tmp[i+1] == 'n')
-                Space[Static_pos++] = 10;
-            else if(tmp[i+1] == '"')
-                Space[Static_pos++] = 34;
-            else if(tmp[i+1] == '\\')
-                Space[Static_pos++] = 92;
-            i++;
-        }
-        else Space[Static_pos++] = (int)tmp[i];
+        Space[Static_pos++] = (int)tmp[i];
     }
 }
 
@@ -282,17 +272,7 @@ void Ex_Asciiz(int line_num)
     int len = (int)tmp.length();
     for(int i = 0; i < len ; i++)
     {
-        if(tmp[i] == '\\')
-        {
-            if(tmp[i+1] == 'n')
-                Space[Static_pos++] = 10;
-            else if(tmp[i+1] == '"')
-                Space[Static_pos++] = 34;
-            else if(tmp[i+1] == '\\')
-                Space[Static_pos++] = 92;
-            i++;
-        }
-        else Space[Static_pos++] = (int)tmp[i];
+        Space[Static_pos++] = (int)tmp[i];
     }
     Space[Static_pos++] = 0;
 }
