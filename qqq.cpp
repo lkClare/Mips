@@ -727,7 +727,7 @@ void Save(string s)
 
 int IF()
 {
-    if(Out[34])
+    if(Out[34] || Access)
     {
         Data_Hazard = true;
         return 0;
@@ -740,6 +740,7 @@ int IF()
     Register[34]++;
     if((Line[tmp].Op_Val >= 29 && Line[tmp].Op_Val <= 52 ) || (Line[tmp].Op_Val == 57))
         Wait = true;
+    Access = true;
     return tmp;
 }
 
@@ -1157,6 +1158,11 @@ void Exe(Flow_Data &x, int line_num)
 
 void MA(Flow_Data &x)
 {
+    if(Access)
+    {
+        Structue_Hazard = true;
+        return;
+    }
     if(x.Op_Val >= 47 && x.Op_Val <= 52)
     {
         switch (x.Op_Val) {
@@ -1182,6 +1188,7 @@ void MA(Flow_Data &x)
                 break;
         }
     }
+    Access = true;
 }
 
 void WB(Flow_Data x)
@@ -1221,6 +1228,8 @@ int main(int argv,char *argc[])
     {
         int cnt = min(5, In_Pro);
         Data_Hazard = false;
+        Structue_Hazard = false;
+        Access = false;
         for(int i = 1; i <= cnt; i++)
         {
             Flow now = Q.front();
@@ -1250,7 +1259,7 @@ int main(int argv,char *argc[])
                 default:
                     break;
             }
-            if(Data_Hazard)
+            if(Data_Hazard || Structue_Hazard)
             {
                 Q1.push(now);
                 In_Pro--;
